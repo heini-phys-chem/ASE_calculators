@@ -1,10 +1,15 @@
 # ASE_calculators
-Put the calculator in the 
-```~/.local/lib/python3.7/site-packages/ase/calculators```
-and import it with:
-```from ase.calculators.ml import ML_calculator```
+Put the calculator in the
+
+```~/.local/lib/python3.7/site-packages/ase/calculators ```
+
+directory and import it with:
+
+```from ase.calculators.ml import ML_calculator ```
+
 or
 ```from ase.calculators.ml import PySCF```
+
 
 
 ml.py:
