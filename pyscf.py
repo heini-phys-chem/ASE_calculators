@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 #
 # Author: Garnet Chan <gkc1000@gmail.com>
-#
+# adapted by Stefan Heinen:
+# - added forces
+# - changed the ase_atoms_to_pyscf function
+# - added an mp2 wrapper
 
 '''
 ASE package interface
@@ -12,7 +15,10 @@ from ase.calculators.calculator import Calculator
 import ase.dft.kpoints
 from ase.lattice import bulk
 
-from pyscf import gto, scf, grad
+from pyscf import gto, scf, grad, mp2
+
+def get_mp2_energy():
+	test = 1
 
 def ase_atoms_to_pyscf(ase_atoms):
 		'''Convert ASE atoms to PySCF atom.
