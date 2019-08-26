@@ -21,7 +21,7 @@ alphas = np.load('alphas.npy')
 X      = np.load('X.npy')
 Q      = np.load('Q.npy')
 
-mol.set_calculator(ML_calculator(mol, sigma, alphas, X, Q)
+mol.set_calculator(ML_calculator(mol, sigma, alphas, X, Q))
 ```
 
 Alphas, X, and Q are .npy files that were created from the training of the model (using FCHL19).
