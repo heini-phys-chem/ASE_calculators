@@ -15,8 +15,8 @@ directory and use it as follows:
 ''' ML calculator'''
 from ase.calculators.ml import ML_calculator
 
-mol = io.read('mol.xyz')
-sigma = 2.5
+mol    = io.read('mol.xyz')
+sigma  = 2.5
 alphas = np.load('alphas.npy')
 X      = np.load('X.npy')
 Q      = np.load('Q.npy')
