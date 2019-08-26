@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Author: Garnet Chan <gkc1000@gmail.com>
-# adapted by Stefan Heinen:
+# adapted by Stefan Heinen <heini.phys.chem@gmail.com>:
 # - added forces
 # - changed the ase_atoms_to_pyscf function
 # - added an mp2 wrapper
