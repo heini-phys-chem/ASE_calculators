@@ -14,6 +14,7 @@ directory and use it as follows:
 ```python
 ''' ML calculator'''
 from ase import io
+from ase.atoms import Atoms
 from ase.calculators.ml import ML_calculator
 
 mol    = io.read('mol.xyz')
@@ -33,6 +34,7 @@ Sigma is a hyperparameter (also from the training of the model).
 ```python
 ''' PySCF calculator'''
 from ase import io
+from ase.atoms import Atoms
 from ase.calculators.pyscf import PySCF
 mol = io.read('mol.xyz')
 mol.set_calculator(PySCF(atoms=mol, molcell=gto.M(verbose=0), mf_class=scf.RHF, mf_dict={}))
