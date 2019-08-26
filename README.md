@@ -1,4 +1,6 @@
 # ASE_calculators
+
+### How to use calculators
 Put the calculator in the
 
 ```~/.local/lib/python3.7/site-packages/ase/calculators ```
