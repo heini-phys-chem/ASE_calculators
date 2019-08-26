@@ -15,8 +15,8 @@ or
 TODO:
 
 ml.py:
- - the script was taken from the PySCF homepage (https://sunqm.github.io/pyscf/_modules/pyscf/pbc/tools/pyscf_ase.html) and adapted, reps. finished
  - 3-4 variables are hardcoded and need to be adapted for every run
 
 pyscf.py:
+ - the script was taken from the PySCF homepage (https://sunqm.github.io/pyscf/_modules/pyscf/pbc/tools/pyscf_ase.html) and adapted, reps. finished
 - writing trajectories is disabled (JSON error while writing...)
