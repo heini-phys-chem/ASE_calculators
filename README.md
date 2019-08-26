@@ -9,9 +9,10 @@ Put the calculator in the
 
 ```~/.local/lib/python3.7/site-packages/ase/calculators ```
 
-directory and import it with:
+directory and use it as follows:
 
-```
+```python
+''' ML calculator'''
 from ase.calculators.ml import ML_calculator
 
 mol = io.read('mol.xyz')
@@ -22,14 +23,12 @@ Q      = np.load('Q.npy')
 
 mol.set_calculator(ML_calculator(mol, sigma, alphas, X, Q)
 ```
-alphas, X, and Q are .npy files that were created from the training of the model (using FCHL19)
 
-sigma is a hyperparameter (also from the training of the model)
+Alphas, X, and Q are .npy files that were created from the training of the model (using FCHL19).
+Sigma is a hyperparameter (also from the training of the model).
 
-
-or
-
-```
+```python
+''' PySCF calculator'''
 from ase.calculators.pyscf import PySCF
 mol = io.read('mol.xyz')
 mol.set_calculator(PySCF(atoms=mol, molcell=gto.M(verbose=0), mf_class=scf.RHF, mf_dict={}))
