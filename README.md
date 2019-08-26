@@ -50,7 +50,7 @@ For more details about PySCF (molcell, mf_class, and mf_dict) please see their d
  - still hardcoded variables which need to be adapted for every run
 
 ### pyscf.py:
- - the script was taken from the PySCF homepage (https://sunqm.github.io/pyscf/_modules/pyscf/pbc/tools/pyscf_ase.html) and adapted, reps. finished
+ - the script was taken from the PySCF homepage (https://sunqm.github.io/pyscf/_modules/pyscf/pbc/tools/pyscf_ase.html) and adapted, resp. finished
  	- added forces
 	- changed function ```ase_atoms_to_pyscf(ase_atoms)```
 	- added an mp2 wrapper (needed for NEB runs)
