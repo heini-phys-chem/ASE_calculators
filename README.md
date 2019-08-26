@@ -1,6 +1,6 @@
 # ASE_calculators
 
-Two ASE calculator from two packages:
+This git rep. contains two ASE calculators from open source QM and ML packages:
  - QMLcode (http://www.qmlcode.org/)
  - PySCF (https://sunqm.github.io/pyscf/)
 
