@@ -1,5 +1,9 @@
 # ASE_calculators
 
+Two ASE calculator from two packages:
+ - QMLcode (http://www.qmlcode.org/)
+ - PySCF (https://sunqm.github.io/pyscf/)
+
 ## How to use calculators
 Put the calculator in the
 
