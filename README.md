@@ -11,12 +11,31 @@ Put the calculator in the
 
 directory and import it with:
 
-```from ase.calculators.ml import ML_calculator ```
+```
+from ase.calculators.ml import ML_calculator
+
+mol = io.read('mol.xyz')
+sigma = 2.5
+alphas = np.load('alphas.npy')
+X      = np.load('X.npy')
+Q      = np.load('Q.npy')
+
+mol.set_calculator(ML_calculator(mol, sigma, alphas, X, Q)
+```
+alphas, X, and Q are .npy files that were created from the training of the model (using FCHL19)
+
+sigma is a hyperparameter (also from the training of the model)
+
 
 or
 
-```from ase.calculators.pyscf import PySCF```
+```
+from ase.calculators.pyscf import PySCF
+mol = io.read('mol.xyz')
+mol.set_calculator(PySCF(atoms=mol, molcell=gto.M(verbose=0), mf_class=scf.RHF, mf_dict={}))
+```
 
+For more details about PySCF (molcell, mf_class, and mf_dict) please see their documentation
 
 ## TODO:
 
