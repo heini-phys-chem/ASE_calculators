@@ -46,7 +46,7 @@ print(mol.get_potential_energy())
 For more details about PySCF (molcell, mf_class, and mf_dict) please see their documentation
 
 ```python
-''' PySCF calculator'''
+''' PySCF_simple calculator'''
 from ase import io
 from ase.atoms import Atoms
 from ase.calculators.pyscf_simple import PySCF_simple
