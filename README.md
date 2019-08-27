@@ -1,8 +1,9 @@
 # ASE_calculators
 
-This git rep. contains two ASE calculators from open source QM and ML packages:
+This git rep. contains three ASE calculators from open source QM and ML packages:
  - QMLcode (http://www.qmlcode.org/)
- - PySCF (https://sunqm.github.io/pyscf/)
+ - PySCF (https://sunqm.github.io/pyscf/, only RHF is working)
+ - PySCF_simple (only RHF and MP2 for SP, GO and NEB)
 
 ## How to use calculators
 Put the calculator in the
@@ -44,6 +45,17 @@ print(mol.get_potential_energy())
 
 For more details about PySCF (molcell, mf_class, and mf_dict) please see their documentation
 
+```python
+''' PySCF calculator'''
+from ase import io
+from ase.atoms import Atoms
+from ase.calculators.pyscf_simple import PySCF_simple
+mol = io.read('mol.xyz')
+mol.set_calculator(PySCF_simple(atoms=initial, method='MP2', basis='6-31g*'))
+print(mol.get_potential_energy())
+print(mol.get_forces())
+```
+
 ## TODO:
 
 ### ml.py:
@@ -55,3 +67,6 @@ For more details about PySCF (molcell, mf_class, and mf_dict) please see their d
 	- changed function ```ase_atoms_to_pyscf(ase_atoms)```
 	- added an mp2 wrapper (needed for NEB runs)
 - writing trajectories is disabled (JSON error while writing...)
+
+### pyscf_simple.py:
+ - conversion Hartree -> Angstrom
