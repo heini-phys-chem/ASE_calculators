@@ -69,5 +69,5 @@ print(mol.get_forces())
 - writing trajectories is disabled (JSON error while writing...)
 
 ### pyscf_simple.py:
- - fixc same energies and forces problem...
+ - fix same energies and forces problem...
  - add remaining methods 
