@@ -69,4 +69,5 @@ print(mol.get_forces())
 - writing trajectories is disabled (JSON error while writing...)
 
 ### pyscf_simple.py:
- - conversion Hartree -> Angstrom
+ - fixc same energies and forces problem...
+ - add remaining methods 

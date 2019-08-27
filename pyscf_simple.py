@@ -6,6 +6,10 @@ from ase.atoms import Atoms
 
 from pyscf import gto, scf, grad, mp
 
+convert_energy    =  27.2114
+convert_forces    = -27.2114 / 0.529177
+convert_positions =  0.529177
+
 def ase_atoms_to_pyscf(ase_atoms):
   '''Convert ASE atoms to PySCF atom.
 
@@ -32,7 +36,8 @@ class PySCF_simple(Calculator):
 			self.mf = scf.RHF(self.mol)
 			energy = self.mf.kernel()
 
-			self.results['energies'] = energy
+			energy *= convert_energy
+
 			return energy
 
 		else:
@@ -42,15 +47,17 @@ class PySCF_simple(Calculator):
 			self.mp2 = mp.MP2(self.mf)
 			corr_energy   = self.mp2.kernel()
 
-			self.results['energies'] = corr_energy[0] + hf_energy
-			return corr_energy[0] + hf_energy
+			energy = corr_energy[0] + hf_energy
+			energy *= convert_energy
+
+			return energy
 
 
 	def get_forces(self, atoms=None):
 		if self.method != 'MP2':
-			forces  = -1*grad.RHF(self.mf).kernel()
+			gradient  = grad.RHF(self.mf).kernel()
+			forces = gradient * convert_forces
 
-			self.results['forces'] = forces
 			return forces
 
 		else:
@@ -60,7 +67,7 @@ class PySCF_simple(Calculator):
 			self.mp2 = mp.MP2(self.mf)
 			self.mp2.kernel()
 
-			forces = -1*grad.mp2.Grad(self.mp2).kernel()
+			gradient = grad.mp2.Grad(self.mp2).kernel()
+			forces = gradient * convert_forces
 
-			self.results['forces'] = forces
 			return forces
