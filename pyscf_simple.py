@@ -21,8 +21,8 @@ class PySCF_simple(Calculator):
 		self.basis       = basis
 		self.method      = method
 
-		self.hf_scanner  = gto.M().set(verbose=0).apply(scf.RHF).as_scanner()
-		self.mp2_scanner = gto.M().set(verbose=0).apply(scf.RHF).apply(mp.MP2).as_scanner()
+		#self.hf_scanner  = gto.M().set(verbose=0).apply(scf.RHF).as_scanner()
+		#self.mp2_scanner = gto.M().set(verbose=0).apply(scf.RHF).apply(mp.MP2).as_scanner()
 
 	def get_potential_energy(self, atoms=None, force_consistent=False):
 		if self.method != 'MP2':
