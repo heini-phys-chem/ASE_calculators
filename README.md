@@ -59,6 +59,9 @@ print(mol.get_potential_energy())
 print(mol.get_forces())
 ```
 
+## NEB example
+![GitHub Logo](/images/irc.png)
+
 ## TODO:
 
 ### ml.py:
