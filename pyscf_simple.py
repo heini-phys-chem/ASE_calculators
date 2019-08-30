@@ -26,13 +26,23 @@ class PySCF_simple(Calculator):
 
 	def get_potential_energy(self, atoms=None, force_consistent=False):
 		if self.method != 'MP2':
-			energy = self.hf_scanner(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis))
+			#energy = self.hf_scanner(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis))
+			mf = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, verbose=0))
+
+			energy = mf.kernel()
 			energy *= convert_energy
 
 			return energy
 
 		else:
-			energy = self.mp2_scanner(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis))
+			#energy = self.mp2_scanner(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis))
+			mf = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, verbose=0))
+			e_hf = mf.kernel()
+
+			mp2 = mp.MP2(mf)
+			e_mp = mp2.kernel()[0]
+
+			energy = e_hf + e_mp
 			energy *= convert_energy
 
 			return energy
