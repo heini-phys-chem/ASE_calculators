@@ -51,7 +51,7 @@ from ase import io
 from ase.atoms import Atoms
 from ase.calculators.pyscf_simple import PySCF_simple
 mol = io.read('mol.xyz')
-mol.set_calculator(PySCF_simple(atoms=initial, method='MP2', basis='6-31g*'))
+mol.set_calculator(PySCF_simple(atoms=mol, method='MP2', basis='6-31g*'))
 print(mol.get_potential_energy())
 print(mol.get_forces())
 ```
