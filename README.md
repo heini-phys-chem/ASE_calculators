@@ -37,6 +37,7 @@ Sigma is a hyperparameter (also from the training of the model).
 from ase import io
 from ase.atoms import Atoms
 from ase.calculators.pyscf import PySCF
+
 mol = io.read('mol.xyz')
 mol.set_calculator(PySCF(atoms=mol, molcell=gto.M(verbose=0), mf_class=scf.RHF, mf_dict={}))
 
@@ -50,8 +51,10 @@ For more details about PySCF (molcell, mf_class, and mf_dict) please see their d
 from ase import io
 from ase.atoms import Atoms
 from ase.calculators.pyscf_simple import PySCF_simple
+
 mol = io.read('mol.xyz')
 mol.set_calculator(PySCF_simple(atoms=mol, method='MP2', basis='6-31g*'))
+
 print(mol.get_potential_energy())
 print(mol.get_forces())
 ```
