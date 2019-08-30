@@ -62,8 +62,11 @@ print(mol.get_forces())
 ## NEB example
 All in one python script:
 	-> Read in reactant and product FF geometries with ASE
+
 	-> Optimize both molecules
+
 	-> Run an NEB calculation
+
 	-> Plot results
 
 ![GitHub Logo](/images/irc.png)
