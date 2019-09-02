@@ -2,59 +2,49 @@ from ase import io
 from ase.neb import NEB
 from ase.neb import NEBTools
 from ase.calculators.pyscf_simple import PySCF_simple
-from ase.calculators.gaussian import Gaussian
 from ase.atoms import Atoms
 from ase.optimize.lbfgs import LBFGS
 from ase.optimize import FIRE
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 from pyscf import gto, scf, grad, mp
 
-import numpy as np
-
-
 # Read initial and final states:
-print(" -> read xyz")
 initial = io.read('react.xyz')
 final = io.read('prod.xyz')
 
+# set calculator
 initial.set_calculator(PySCF_simple(initial, method='MP2', basis='6-31g*'))
 final.set_calculator(PySCF_simple(final, method='MP2', basis='6-31g*'))
 
-print(" -> opt react prod")
+# Opt reactant & product
 dyn_react = LBFGS(initial)
 dyn_react.run(fmax=0.05)
 
 dyn_prod = LBFGS(final)
 dyn_prod.run(fmax=0.05)
 
-# write output geometries of GO
-#io.write("initial.xyz", initial)
-#io.write("final.xyz", final)
-
-# Make a band consisting of N images:
+# Make a band consisting of N + 2 images:
+N = 17
 images	= [initial]
-images += [initial.copy() for i in range(17)]
+images += [initial.copy() for i in range(N)]
 images += [final]
 
-print(" -> set calculator")
+# set calculators for images
 for image in images:
     image.set_calculator(PySCF_simple(atoms=image, method='MP2', basis='6-31g*'))
 
-neb = NEB(images,climb=True, k=0.6)
+# set NEB
+neb = NEB(images, climb=True, k=0.6)
 nebTools = NEBTools(images)
 
 neb.interpolate('idpp')
 
-# write NEB guess of interpolation
-#for i,image in enumerate(images):
-#    out_name = "img_{:03d}.xyz".format(i)
-#    io.write(out_name,	image)
-
-print(" -> start neb run")
+# start NEB run
 opt = FIRE(neb)
 opt.run(fmax=0.05)
-
-print(nebTools.get_barrier())
 
 # get IRC data
 Ef, dE = nebTools.get_barrier()
@@ -67,7 +57,7 @@ np.save("y_claisen_mp2.npy", y)
 np.save("x_claisen_fit_mp2.npy", x_fit)
 np.save("y_claisen_fit_mp2.npy", y_fit)
 
-# plot IRC
+# plot IRC data
 y_mp2     *= 23.06
 y_fit_mp2 *= 23.06
 
