@@ -52,17 +52,17 @@ max_force = nebTools.get_fmax()
 x, y, x_fit, y_fit, forces = nebTools.get_fit()
 
 # save IRC data
-np.save("x_mp2.npy", x)
-np.save("y_mp2.npy", y)
-np.save("x_fit_mp2.npy", x_fit)
-np.save("y_fit_mp2.npy", y_fit)
+np.save("x.npy", x)
+np.save("y.npy", y)
+np.save("x_fit.npy", x_fit)
+np.save("y_fit.npy", y_fit)
 
 # plot IRC data
-y_mp2     *= 23.06
-y_fit_mp2 *= 23.06
+y     *= 23.06
+y_fit *= 23.06
 
-plt.plot(x_fit_mp2,y_fit_mp2, color='C0', label='MP2')
-plt.scatter(x_mp2,y_mp2, marker='x', color='k', lw=2)
+plt.plot(x_fit, y_fit, color='C0', label='MP2')
+plt.scatter(x, y, marker='x', color='k', lw=2)
 
 leg = plt.legend(fontsize=30)
 leg_lines = leg.get_lines()
