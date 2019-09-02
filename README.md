@@ -83,3 +83,4 @@ All in one python script:
 
 ### pyscf_simple.py:
  - add remaining methods 
+ - io.write not working...
