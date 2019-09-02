@@ -52,10 +52,10 @@ max_force = nebTools.get_fmax()
 x, y, x_fit, y_fit, forces = nebTools.get_fit()
 
 # save IRC data
-np.save("x_claisen_mp2.npy", x)
-np.save("y_claisen_mp2.npy", y)
-np.save("x_claisen_fit_mp2.npy", x_fit)
-np.save("y_claisen_fit_mp2.npy", y_fit)
+np.save("x_mp2.npy", x)
+np.save("y_mp2.npy", y)
+np.save("x_fit_mp2.npy", x_fit)
+np.save("y_fit_mp2.npy", y_fit)
 
 # plot IRC data
 y_mp2     *= 23.06
