@@ -18,8 +18,9 @@ class PySCF_simple(Calculator):
 	implemented_properties = ['energies', 'forces']
 
 	def __init__(self, atoms, method, basis):
-		self.basis       = basis
-		self.method      = method
+		self.basis  = basis
+		self.method = method
+		self.results = {}
 
 		#self.hf_scanner  = gto.M().set(verbose=0).apply(scf.RHF).as_scanner()
 		#self.mp2_scanner = gto.M().set(verbose=0).apply(scf.RHF).apply(mp.MP2).as_scanner()
@@ -27,40 +28,44 @@ class PySCF_simple(Calculator):
 	def get_potential_energy(self, atoms=None, force_consistent=False):
 		if self.method != 'MP2':
 			#energy = self.hf_scanner(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis))
-			mf = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, verbose=0))
+			mf = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0))
 
-			energy = mf.kernel()
+			energy  = mf.kernel()
 			energy *= convert_energy
 
+			self.results['energy'] = energy
 			return energy
 
 		else:
 			#energy = self.mp2_scanner(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis))
-			mf = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, verbose=0))
-			e_hf = mf.kernel()
+			mf      = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0))
+			e_hf    = mf.kernel()
 
-			mp2 = mp.MP2(mf)
-			e_mp = mp2.kernel()[0]
+			mp2     = mp.MP2(mf)
+			e_mp    = mp2.kernel()[0]
 
-			energy = e_hf + e_mp
+			energy  = e_hf + e_mp
 			energy *= convert_energy
 
+			self.results['energy'] = energy
 			return energy
 
 
 	def get_forces(self, atoms=None):
 		if self.method != 'MP2':
-			mf       = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, verbose=0)).run()
+			mf       = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0)).run()
 			gradient = grad.RHF(mf).kernel()
 			forces   = gradient * convert_forces
 
+			self.results['forces'] = forces
 			return forces
 
 		else:
-			mf       = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, verbose=0)).run()
+			mf       = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0)).run()
 			mp2      = mp.MP2(mf).run()
 			gradient = mp2.nuc_grad_method().kernel()
 
 			forces   = gradient * convert_forces
 
+			self.results['forces'] = forces
 			return forces

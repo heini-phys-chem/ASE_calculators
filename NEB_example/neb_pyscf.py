@@ -2,49 +2,55 @@ from ase import io
 from ase.neb import NEB
 from ase.neb import NEBTools
 from ase.calculators.pyscf_simple import PySCF_simple
+from ase.calculators.gaussian import Gaussian
 from ase.atoms import Atoms
 from ase.optimize.lbfgs import LBFGS
 from ase.optimize import FIRE
 
-import numpy as np
-import matplotlib.pyplot as plt
-
 from pyscf import gto, scf, grad, mp
 
+import numpy as np
+
+import matplotlib.pyplot as plt
+
 # Read initial and final states:
+print(" -> read xyz")
 initial = io.read('react.xyz')
 final = io.read('prod.xyz')
 
-# set calculator
 initial.set_calculator(PySCF_simple(initial, method='MP2', basis='6-31g*'))
 final.set_calculator(PySCF_simple(final, method='MP2', basis='6-31g*'))
 
-# Opt reactant & product
+print(" -> opt react prod")
 dyn_react = LBFGS(initial)
 dyn_react.run(fmax=0.05)
-
+#
 dyn_prod = LBFGS(final)
 dyn_prod.run(fmax=0.05)
 
-# Make a band consisting of N + 2 images:
-N = 17
+# write output geometries of GO
+io.write("initial.xyz", initial)
+io.write("final.xyz", final)
+
+# Make a band consisting of N images:
 images	= [initial]
-images += [initial.copy() for i in range(N)]
+images += [initial.copy() for i in range(17)]
 images += [final]
 
-# set calculators for images
+print(" -> set calculator")
 for image in images:
     image.set_calculator(PySCF_simple(atoms=image, method='MP2', basis='6-31g*'))
 
-# set NEB
-neb = NEB(images, climb=True, k=0.6)
+neb = NEB(images,climb=True, k=0.6)
 nebTools = NEBTools(images)
 
 neb.interpolate('idpp')
 
-# start NEB run
+print(" -> start neb run")
 opt = FIRE(neb)
 opt.run(fmax=0.05)
+
+print(nebTools.get_barrier())
 
 # get IRC data
 Ef, dE = nebTools.get_barrier()
@@ -52,17 +58,22 @@ max_force = nebTools.get_fmax()
 x, y, x_fit, y_fit, forces = nebTools.get_fit()
 
 # save IRC data
-np.save("x.npy", x)
-np.save("y.npy", y)
-np.save("x_fit.npy", x_fit)
-np.save("y_fit.npy", y_fit)
+np.save("x_claisen_mp2.npy", x)
+np.save("y_claisen_mp2.npy", y)
+np.save("x_claisen_fit_mp2.npy", x_fit)
+np.save("y_claisen_fit_mp2.npy", y_fit)
 
-# plot IRC data
-y     *= 23.06
-y_fit *= 23.06
+# write NEB guess of interpolation
+for i,image in enumerate(images):
+    out_name = "claisen_{:03d}.xyz".format(i)
+    io.write(out_name,	image)
 
-plt.plot(x_fit, y_fit, color='C0', label='MP2')
-plt.scatter(x, y, marker='x', color='k', lw=2)
+# plot IRC
+y_mp2     *= 23.06
+y_fit_mp2 *= 23.06
+
+plt.plot(x_fit_mp2,y_fit_mp2, color='C0', label='MP2')
+plt.scatter(x_mp2,y_mp2, marker='x', color='k', lw=2)
 
 leg = plt.legend(fontsize=30)
 leg_lines = leg.get_lines()
