@@ -69,11 +69,11 @@ for i,image in enumerate(images):
     io.write(out_name,	image)
 
 # plot IRC
-y_mp2     *= 23.06
-y_fit_mp2 *= 23.06
+y2     *= 23.06
+y_fit  *= 23.06
 
-plt.plot(x_fit_mp2,y_fit_mp2, color='C0', label='MP2')
-plt.scatter(x_mp2,y_mp2, marker='x', color='k', lw=2)
+plt.plot(x_fit,y_fit, color='C0', label='MP2')
+plt.scatter(x,y, marker='x', color='k', lw=2)
 
 leg = plt.legend(fontsize=30)
 leg_lines = leg.get_lines()
