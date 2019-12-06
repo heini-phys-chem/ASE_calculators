@@ -4,7 +4,7 @@ import numpy as np
 from ase.calculators.calculator import Calculator
 from ase.atoms import Atoms
 
-from pyscf import gto, scf, grad, mp
+from pyscf import gto, scf, grad, mp, dft
 
 convert_energy    =  27.2114
 convert_forces    =  -27.2114 / 0.529177
@@ -26,7 +26,7 @@ class PySCF_simple(Calculator):
 		#self.mp2_scanner = gto.M().set(verbose=0).apply(scf.RHF).apply(mp.MP2).as_scanner()
 
 	def get_potential_energy(self, atoms=None, force_consistent=False):
-		if self.method != 'MP2':
+		if self.method == 'HF':
 			#energy = self.hf_scanner(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis))
 			mf = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0))
 
@@ -36,7 +36,17 @@ class PySCF_simple(Calculator):
 			self.results['energy'] = energy
 			return energy
 
-		else:
+		elif self.method == "DFT":
+			mf     = dft.RKS(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0))
+			mf.xc = 'pbe'
+			energy = mf.kernel()
+			energy *= convert_energy
+
+			self.results['energy'] = energy
+			print(energy)
+			return energy
+
+		elif self.method == "MP2":
 			#energy = self.mp2_scanner(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis))
 			mf      = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0))
 			e_hf    = mf.kernel()
@@ -50,9 +60,12 @@ class PySCF_simple(Calculator):
 			self.results['energy'] = energy
 			return energy
 
+		#else:
+		#	except Exception as e: print("wrong method chosen. available methdos: HF, DFT, and MP2")
+
 
 	def get_forces(self, atoms=None):
-		if self.method != 'MP2':
+		if self.method == 'HF':
 			mf       = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0)).run()
 			gradient = grad.RHF(mf).kernel()
 			forces   = gradient * convert_forces
@@ -60,7 +73,17 @@ class PySCF_simple(Calculator):
 			self.results['forces'] = forces
 			return forces
 
-		else:
+		elif self.method == "DFT":
+			mf       = dft.RKS(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0)).run()
+			mf.xc = 'pbe'
+			#gradient = grad.rks(mf).kernel()
+			gradient = mf.nuc_grad_method().kernel()
+			forces = gradient * convert_forces
+
+			self.results['forces'] = forces
+			return forces
+
+		elif self.method == "MP2":
 			mf       = scf.RHF(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0)).run()
 			mp2      = mp.MP2(mf).run()
 			gradient = mp2.nuc_grad_method().kernel()
@@ -69,3 +92,6 @@ class PySCF_simple(Calculator):
 
 			self.results['forces'] = forces
 			return forces
+
+		#else:
+		#	except Exception as e: print("wrong method chosen. available methdos: HF, DFT, and MP2")
