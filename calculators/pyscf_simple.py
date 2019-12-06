@@ -17,9 +17,10 @@ class PySCF_simple(Calculator):
 	name = 'PySCF_simple'
 	implemented_properties = ['energies', 'forces']
 
-	def __init__(self, atoms, method, basis):
+	def __init__(self, atoms, method='HF', basis='sto-3g', xc='pbe'):
 		self.basis  = basis
 		self.method = method
+		self.xc     = xc
 		self.results = {}
 
 		#self.hf_scanner  = gto.M().set(verbose=0).apply(scf.RHF).as_scanner()
@@ -38,12 +39,11 @@ class PySCF_simple(Calculator):
 
 		elif self.method == "DFT":
 			mf     = dft.RKS(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0))
-			mf.xc = 'pbe'
+			mf.xc = self.xc
 			energy = mf.kernel()
 			energy *= convert_energy
 
 			self.results['energy'] = energy
-			print(energy)
 			return energy
 
 		elif self.method == "MP2":
@@ -75,7 +75,7 @@ class PySCF_simple(Calculator):
 
 		elif self.method == "DFT":
 			mf       = dft.RKS(gto.M(atom=ase_atoms_to_pyscf(atoms), basis=self.basis, charge=0, verbose=0)).run()
-			mf.xc = 'pbe'
+			mf.xc = self.xc
 			#gradient = grad.rks(mf).kernel()
 			gradient = mf.nuc_grad_method().kernel()
 			forces = gradient * convert_forces
