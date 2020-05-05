@@ -3,7 +3,7 @@
 This git rep. contains three ASE calculators from open source QM and ML packages:
  - QMLcode (http://www.qmlcode.org/)
  - PySCF (https://sunqm.github.io/pyscf/)
- - PySCF_simple (only RHF and MP2 for SP, GO and NEB)
+ - PySCF_simple (HF, DFT, and MP2 for SP, GO and NEB)
 
 ## How to use calculators
 Put the calculator in the
