@@ -79,7 +79,6 @@ All in one python script:
 	- changed function ```ase_atoms_to_pyscf(ase_atoms)```
 	- add an mp2 wrapper (needed for NEB runs)
 - writing trajectories is disabled (JSON error while writing...)
-- not working...
 
 ### pyscf_simple.py:
- - add remaining methods 
+ - TODO: add remaining methods (semi empirical, CC, ...)
